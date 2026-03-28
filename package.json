@@ -1,0 +1,19 @@
+{
+  "name": "canna-dash",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Canna Dash storefront backend — forwards confirmed orders to delivery-dispatch",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "node -e \"process.exit(0)\"",
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "express": "^4.21.2"
+  }
+}

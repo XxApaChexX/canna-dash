@@ -1,0 +1,455 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Canna Dash — Store</title>
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,600;0,9..40,700&display=swap");
+
+      :root {
+        --bg: #0c0f0c;
+        --card: #151a15;
+        --border: #2a332a;
+        --text: #e8f0e8;
+        --muted: #8fa38f;
+        --accent: #22c55e;
+        --accent-dim: rgba(34, 197, 94, 0.15);
+        --radius: 12px;
+        --font: "DM Sans", system-ui, sans-serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        font-size: 15px;
+        line-height: 1.5;
+      }
+
+      .wrap {
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 24px 18px 48px;
+      }
+
+      header {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 16px;
+        margin-bottom: 28px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      .brand {
+        font-weight: 700;
+        font-size: 1.35rem;
+        letter-spacing: -0.02em;
+      }
+
+      .brand span {
+        color: var(--accent);
+      }
+
+      .links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+        align-items: center;
+      }
+
+      .links a {
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 14px;
+      }
+
+      .links a:hover {
+        color: var(--text);
+      }
+
+      .links a.dispatch {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      h1 {
+        margin: 0 0 8px;
+        font-size: 1.5rem;
+        font-weight: 700;
+      }
+
+      .lead {
+        color: var(--muted);
+        margin: 0 0 24px;
+        font-size: 14px;
+      }
+
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+
+      @media (min-width: 560px) {
+        .grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+
+      .product {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: var(--radius);
+        padding: 16px;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+      }
+
+      .product strong {
+        font-size: 15px;
+      }
+
+      .price {
+        color: var(--accent);
+        font-weight: 600;
+      }
+
+      .meta {
+        font-size: 13px;
+        color: var(--muted);
+      }
+
+      button {
+        font-family: var(--font);
+        cursor: pointer;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: var(--accent-dim);
+        color: var(--accent);
+        padding: 10px 14px;
+        font-weight: 600;
+        font-size: 14px;
+      }
+
+      button:hover {
+        background: rgba(34, 197, 94, 0.25);
+      }
+
+      button:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+      }
+
+      .section {
+        margin-top: 32px;
+      }
+
+      .section h2 {
+        margin: 0 0 12px;
+        font-size: 1.1rem;
+      }
+
+      .cart-line {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-bottom: 1px solid var(--border);
+        font-size: 14px;
+      }
+
+      .cart-empty {
+        color: var(--muted);
+        font-size: 14px;
+      }
+
+      form.checkout {
+        display: grid;
+        gap: 12px;
+        margin-top: 16px;
+        max-width: 440px;
+      }
+
+      label {
+        font-size: 13px;
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      input,
+      textarea {
+        font-family: var(--font);
+        font-size: 15px;
+        padding: 12px 14px;
+        border-radius: 8px;
+        border: 1px solid var(--border);
+        background: #0a0d0a;
+        color: var(--text);
+      }
+
+      input:focus,
+      textarea:focus {
+        outline: none;
+        border-color: var(--accent);
+      }
+
+      .btn-primary {
+        background: var(--accent);
+        color: #041204;
+        border: none;
+        padding: 14px 18px;
+        font-size: 15px;
+        margin-top: 8px;
+      }
+
+      .btn-primary:hover:not(:disabled) {
+        filter: brightness(1.08);
+      }
+
+      .banner {
+        padding: 12px 14px;
+        border-radius: var(--radius);
+        font-size: 14px;
+        margin-top: 16px;
+        display: none;
+      }
+
+      .banner.show {
+        display: block;
+      }
+
+      .banner.ok {
+        background: rgba(34, 197, 94, 0.12);
+        border: 1px solid rgba(34, 197, 94, 0.35);
+        color: #86efac;
+      }
+
+      .banner.err {
+        background: rgba(239, 68, 68, 0.12);
+        border: 1px solid rgba(239, 68, 68, 0.35);
+        color: #fca5a5;
+      }
+
+      .hint {
+        font-size: 12px;
+        color: var(--muted);
+        margin-top: 8px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <header>
+        <div class="brand">Canna <span>Dash</span></div>
+        <nav class="links">
+          <a id="dispatchLink" class="dispatch" href="#" target="_blank" rel="noopener noreferrer">Dispatch board</a>
+          <a href="/health">Health</a>
+        </nav>
+      </header>
+
+      <h1>Menu</h1>
+      <p class="lead">
+        Demo storefront — add items, then complete delivery details. Your order is sent to the dispatch board on the server (webhook + secret).
+      </p>
+
+      <div class="grid" id="productGrid"></div>
+
+      <section class="section">
+        <h2>Cart</h2>
+        <div id="cartBody"></div>
+      </section>
+
+      <section class="section">
+        <h2>Delivery</h2>
+        <form class="checkout" id="checkoutForm">
+          <label>
+            Full name
+            <input name="customerName" autocomplete="name" required placeholder="Jane Doe" />
+          </label>
+          <label>
+            Phone
+            <input name="customerPhone" type="tel" autocomplete="tel" required placeholder="+1-555-0100" />
+          </label>
+          <label>
+            Drop-off address
+            <input name="customerAddress" autocomplete="street-address" required placeholder="123 Main St, City, ST" />
+          </label>
+          <label>
+            Notes (optional)
+            <textarea name="notes" rows="2" placeholder="Gate code, building, etc."></textarea>
+          </label>
+          <button type="submit" class="btn-primary" id="submitBtn">Place order &amp; send to dispatch</button>
+          <p class="hint">Requires <code>DELIVERY_API_BASE_URL</code> and <code>DELIVERY_WEBHOOK_SECRET</code> on this server.</p>
+        </form>
+        <div id="resultBanner" class="banner" role="status"></div>
+      </section>
+    </div>
+
+    <script>
+      const PRODUCTS = [
+        { id: "flower-1", name: "Premium flower (3.5g)", price: 45 },
+        { id: "edible-1", name: "Gummies (10pk)", price: 28 },
+        { id: "cart-1", name: "Vape cart (1g)", price: 52 }
+      ];
+
+      let cart = {};
+
+      function money(n) {
+        return "$" + n.toFixed(2);
+      }
+
+      function renderProducts() {
+        const el = document.getElementById("productGrid");
+        el.innerHTML = PRODUCTS.map(
+          (p) => `
+          <div class="product">
+            <strong>${p.name}</strong>
+            <div class="price">${money(p.price)}</div>
+            <div class="meta">In stock</div>
+            <button type="button" data-add="${p.id}">Add to cart</button>
+          </div>
+        `
+        ).join("");
+        el.querySelectorAll("[data-add]").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const id = btn.getAttribute("data-add");
+            const p = PRODUCTS.find((x) => x.id === id);
+            if (!p) return;
+            cart[id] = cart[id] || { ...p, qty: 0 };
+            cart[id].qty += 1;
+            renderCart();
+          });
+        });
+      }
+
+      function renderCart() {
+        const body = document.getElementById("cartBody");
+        const ids = Object.keys(cart);
+        if (!ids.length) {
+          body.innerHTML = '<div class="cart-empty">Cart is empty — add items above.</div>';
+          return;
+        }
+        let total = 0;
+        body.innerHTML = ids
+          .map((id) => {
+            const line = cart[id];
+            const sub = line.price * line.qty;
+            total += sub;
+            return `<div class="cart-line"><span>${line.qty}× ${line.name}</span><span>${money(sub)}</span></div>`;
+          })
+          .join("");
+        body.innerHTML += `<div class="cart-line" style="border-bottom:none;font-weight:600"><span>Total</span><span>${money(
+          total
+        )}</span></div>`;
+      }
+
+      async function loadConfig() {
+        try {
+          const r = await fetch("/api/config");
+          const j = await r.json();
+          const a = document.getElementById("dispatchLink");
+          if (j.dispatchBoardUrl) {
+            a.href = j.dispatchBoardUrl + "/";
+          }
+        } catch {
+          document.getElementById("dispatchLink").href = "https://delivery-dispatch-mvp.onrender.com/";
+        }
+      }
+
+      document.getElementById("checkoutForm").addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const fd = new FormData(e.target);
+        const customerName = String(fd.get("customerName") || "").trim();
+        const customerPhone = String(fd.get("customerPhone") || "").trim();
+        const customerAddress = String(fd.get("customerAddress") || "").trim();
+        const notes = String(fd.get("notes") || "").trim();
+
+        const items = Object.keys(cart).map((id) => ({
+          id,
+          name: cart[id].name,
+          qty: cart[id].qty,
+          price: cart[id].price
+        }));
+
+        if (!items.length) {
+          showBanner("err", "Add at least one item to the cart.");
+          return;
+        }
+
+        const btn = document.getElementById("submitBtn");
+        const prev = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = "Sending…";
+        showBanner();
+
+        try {
+          const res = await fetch("/api/checkout", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              customerName,
+              customerPhone,
+              customerAddress,
+              notes: notes || null,
+              items
+            })
+          });
+          const data = await res.json().catch(() => ({}));
+          if (!res.ok) {
+            throw new Error(data.error || "Checkout failed");
+          }
+          const tc = data.dispatch && data.dispatch.trackingCode ? data.dispatch.trackingCode : null;
+          showBanner(
+            "ok",
+            `Order sent to dispatch. Store order ID: <strong>${escapeHtml(data.storeOrderId)}</strong>` +
+              (tc ? ` · Tracking code: <strong>${escapeHtml(tc)}</strong>` : "") +
+              ". Open the dispatch board to assign a driver."
+          );
+          cart = {};
+          renderCart();
+          e.target.reset();
+        } catch (err) {
+          showBanner("err", err.message || "Request failed");
+        } finally {
+          btn.disabled = false;
+          btn.textContent = prev;
+        }
+      });
+
+      function escapeHtml(s) {
+        return String(s)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;");
+      }
+
+      function showBanner(kind, html) {
+        const b = document.getElementById("resultBanner");
+        if (!kind) {
+          b.className = "banner";
+          b.innerHTML = "";
+          return;
+        }
+        b.className = "banner show " + kind;
+        b.innerHTML = html;
+      }
+
+      renderProducts();
+      renderCart();
+      loadConfig();
+    </script>
+  </body>
+</html>
