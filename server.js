@@ -48,7 +48,12 @@ app.get("/health", (_req, res) => {
 
 /** Public config for storefront (no secrets). */
 app.get("/api/config", (_req, res) => {
-  res.json({ dispatchBoardUrl: publicDispatchBoard });
+  res.json({
+    dispatchBoardUrl: publicDispatchBoard,
+    /** Same org: delivery is operated from dispatch; this store only takes orders. */
+    fulfillmentManagedBy: "dispatch",
+    fulfillmentLabel: "Fleet Dispatch — drivers and tracking are managed in the command center",
+  });
 });
 
 /**
