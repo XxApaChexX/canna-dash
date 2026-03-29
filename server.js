@@ -25,7 +25,7 @@ async function forwardToDispatch(body) {
   if (!deliveryBase || !webhookSecret) {
     throw new Error("Set DELIVERY_API_BASE_URL and DELIVERY_WEBHOOK_SECRET on this server (Vercel env).");
   }
-  const url = `${deliveryBase}/api/integrations/store/orders`;
+  const url = `${deliveryBase}/api/integrations/canna-dash/orders`;
   const res = await fetch(url, {
     method: "POST",
     headers: {
@@ -78,14 +78,26 @@ app.post("/api/checkout", async (req, res) => {
       .join("; ");
     const notes = [lines && `Items: ${lines}`, extraNotes].filter(Boolean).join(" · ") || null;
 
+    const rawPayment = String(o.paymentMethod || o.selectedPaymentMethod || "").trim();
+    const paymentMap = {
+      cash: "cash",
+      cash_app: "cash_app",
+      apple_pay: "apple_pay",
+      other: "other",
+    };
+    const paymentMethod = paymentMap[rawPayment] || null;
+
     const payload = {
-      storeOrderId,
+      cannaDashOrderId: storeOrderId,
       customerName,
       customerPhone,
       customerAddress,
       customerLat: o.customerLat ?? null,
       customerLng: o.customerLng ?? null,
       notes,
+      selectedPaymentMethod: paymentMethod || undefined,
+      paymentStatus: paymentMethod ? "pending" : undefined,
+      paymentNote: o.paymentNote != null ? String(o.paymentNote).trim().slice(0, 500) || undefined : undefined,
     };
 
     const result = await forwardToDispatch(payload);

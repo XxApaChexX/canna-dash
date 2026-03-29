@@ -290,6 +290,31 @@
             Notes (optional)
             <textarea name="notes" rows="2" placeholder="Gate code, building, etc."></textarea>
           </label>
+          <fieldset style="border: 1px solid var(--border); border-radius: var(--radius); padding: 14px; margin: 0">
+            <legend style="padding: 0 8px; color: var(--muted); font-size: 13px">Payment method</legend>
+            <div style="display: grid; gap: 10px; margin-top: 4px">
+              <label style="flex-direction: row; align-items: center; gap: 10px">
+                <input type="radio" name="paymentMethod" value="cash" required />
+                <span>Cash</span>
+              </label>
+              <label style="flex-direction: row; align-items: center; gap: 10px">
+                <input type="radio" name="paymentMethod" value="cash_app" />
+                <span>Cash App</span>
+              </label>
+              <label style="flex-direction: row; align-items: center; gap: 10px">
+                <input type="radio" name="paymentMethod" value="apple_pay" />
+                <span>Apple Pay</span>
+              </label>
+              <label style="flex-direction: row; align-items: center; gap: 10px">
+                <input type="radio" name="paymentMethod" value="other" />
+                <span>Other</span>
+              </label>
+            </div>
+          </fieldset>
+          <label>
+            Payment note (optional — e.g. Cashtag)
+            <input name="paymentNote" autocomplete="off" placeholder="$YourBrand" />
+          </label>
           <button type="submit" class="btn-primary" id="submitBtn">Place order &amp; send to dispatch</button>
           <p class="hint">Requires <code>DELIVERY_API_BASE_URL</code> and <code>DELIVERY_WEBHOOK_SECRET</code> on this server.</p>
         </form>
@@ -375,6 +400,8 @@
         const customerPhone = String(fd.get("customerPhone") || "").trim();
         const customerAddress = String(fd.get("customerAddress") || "").trim();
         const notes = String(fd.get("notes") || "").trim();
+        const paymentMethod = String(fd.get("paymentMethod") || "").trim();
+        const paymentNote = String(fd.get("paymentNote") || "").trim();
 
         const items = Object.keys(cart).map((id) => ({
           id,
@@ -403,6 +430,8 @@
               customerPhone,
               customerAddress,
               notes: notes || null,
+              paymentMethod,
+              paymentNote: paymentNote || null,
               items
             })
           });
